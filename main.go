@@ -5,17 +5,25 @@ import (
 	"log"
 	"os"
 	"net/http"
-	"encoding/json"
+
 )
 
 
 //port definition, pass as params
-
 var port string = os.Getenv("PORT")
 
 func main() {
-	if port == ""{
+	if port == "" {
 		log.Println("No Port was provided, using 3000")
+		port = "3000"
 	}
-	fmt.Println("Hello world")
+
+	http.HandleFunc("/", root)
+	log.Println("Listning for connections on port %s", port)
+	log.Fatal(http.ListenAndServe(":" + port, nil))
 }
+
+func root(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Yes, it's running")
+}
+
